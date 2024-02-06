@@ -99,8 +99,9 @@ const Grid: React.FC<GridProps> = ({ numColumns, cells: initialCells, restartGam
               onClick={() => handleClick(cells[cell.index])}
               onContextMenu={(e) => handleRightClick(e, cells[cell.index])}
             >
-              {!cell.isCovered && (cell.isMined ? <img src={mine} className="gridImage" /> : cell.minedNeighborCount)}
-              {cell.isCovered && cell.isFlagged ? <img src={flag} className="gridImage" /> : ""}
+              {!cell.isCovered &&
+                (cell.isMined ? <img src={mine} alt="mine" className="gridImage" /> : cell.minedNeighborCount)}
+              {cell.isCovered && cell.isFlagged ? <img src={flag} alt="flag" className="gridImage" /> : ""}
             </li>
           ))}
         </ul>
