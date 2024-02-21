@@ -1,22 +1,50 @@
 import React, { useEffect, useState } from "react";
-import { Cell } from "../App";
 import flag from "../images/flag.svg";
 import mine from "../images/mine.svg";
+import Cell from "./Cell";
 
-export interface GridProps {
+interface GridProps {
   numColumns: number;
-  cells: Cell[];
+  numRows: number;
+  numMines: number;
   restartGame: () => void;
 }
 
-const Grid: React.FC<GridProps> = ({ numColumns, cells: initialCells, restartGame: restartGame }) => {
+const Grid: React.FC<GridProps> = ({ numColumns, numRows, numMines, restartGame }) => {
   const [cells, setCells] = useState<Cell[]>([]);
   const [isGameOver, setGameOver] = useState<boolean>(false);
   const [isWin, setWin] = useState<boolean>(false);
 
   useEffect(() => {
-    setCells(initialCells);
-  }, [initialCells]);
+    const initializeCells = (): Cell[] => {
+      let newCells: Cell[] = [];
+      for (let i = 0; i < numRows * numColumns; i++) {
+        newCells.push(new Cell(i, numColumns, numRows));
+      }
+
+      let minesPlaced = 0;
+      while (minesPlaced < numMines) {
+        const randomIndex = Math.floor(Math.random() * newCells.length);
+        if (!newCells[randomIndex].isMined) {
+          newCells[randomIndex].isMined = true;
+          minesPlaced++;
+        }
+      }
+
+      newCells.forEach((cell) => {
+        cell.neighbors.forEach((neighborIndex) => {
+          if (newCells[neighborIndex] && newCells[neighborIndex].isMined) {
+            cell.minedNeighborCount++;
+          }
+        });
+      });
+
+      return newCells;
+    };
+
+    setCells(initializeCells());
+  }, [numColumns, numRows, numMines]);
+
   const uncoverRecursive = (cellIndex: number, cellData: Cell[], visitedIndices: Set<number>) => {
     const cell = cellData[cellIndex];
     if (!cell || cell.isMined || cell.isFlagged || visitedIndices.has(cellIndex)) {
@@ -81,15 +109,15 @@ const Grid: React.FC<GridProps> = ({ numColumns, cells: initialCells, restartGam
   const getCellClassName = (cell: Cell) => {
     if (!cell.isCovered) {
       if (cell.isMined) {
-        return "item mine-selected";
+        return "cell mine-selected";
       }
-      return "item selected";
+      return "cell selected";
     }
-    return "item";
+    return "cell";
   };
 
   return (
-    <main>
+    <div className="grid">
       {rows.map((row, rowIndex) => (
         <ul className="row" key={rowIndex}>
           {row.map((cell) => (
@@ -120,7 +148,7 @@ const Grid: React.FC<GridProps> = ({ numColumns, cells: initialCells, restartGam
           </button>
         </>
       )}
-    </main>
+    </div>
   );
 };
 

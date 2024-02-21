@@ -1,6 +1,5 @@
-.app {
-  font-family: sans-serif;
-  text-align: center;
+body {
+  margin: 0;
 }
 
 .app {
@@ -9,15 +8,18 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  color: #000000;
+  color: white;
+  background-color: #111;
+  font-family: sans-serif;
+  text-align: center;
   font-size: 18px;
   line-height: 1;
 }
 
 button {
   font-size: 14px;
-  color: black;
-  background-color: white;
+  color: white;
+  background-color: #444;
   border: 1px solid black;
   border-radius: 40px;
   line-height: 1;
@@ -33,14 +35,12 @@ button {
 }
 
 button:hover {
-  background-color: black;
-  color: white;
+  background-color: #777;
 }
 
 input {
   width: 246px;
   font-size: 16px;
-  line-height: 20px;
   color: black;
   padding: 10px;
   border: 1px solid black;
@@ -64,16 +64,11 @@ dd {
   list-style: none;
 }
 
-main {
+.grid {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   text-align: center;
-}
-
-h1 {
-  font-size: 16px;
-  font-weight: bold;
 }
 
 .row {
@@ -82,10 +77,10 @@ h1 {
   align-items: center;
 }
 
-.item {
+.cell {
   width: 40px;
   height: 40px;
-  background-color: gray;
+  background-color: #555;
   margin: 2px;
   display: flex;
   justify-content: center;
@@ -95,11 +90,15 @@ h1 {
   cursor: pointer;
 }
 
-.item.selected {
-  background-color: #444;
+.cell:hover {
+  background-color: #777;
 }
 
-.item.mine-selected {
+.cell.selected {
+  background-color: #333;
+}
+
+.cell.mine-selected {
   background-color: red;
 }
 
@@ -114,4 +113,8 @@ label {
 .gridImage {
   width: 20px;
   height: 20px;
+}
+
+.explanation {
+  font-size: 14px;
 }
